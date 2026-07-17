@@ -1,35 +1,59 @@
 import streamlit as st
+import os
 from src.core.rag_chain import query_agent
+from src.utils.validator import validate_file
+from ingest import perform_ingestion
 
 st.set_page_config(page_title="Corporate AI Agent", page_icon="🤖")
 
 st.title("🤖 E-CommCorp Knowledge Agent")
-st.markdown("Welcome! Ask me anything about our company policies, shipping, or FAQs.")
 
-# Initialize chat history
+# Sidebar para carga de archivos
+with st.sidebar:
+    st.header("Gestionar Documentos")
+    uploaded_file = st.file_uploader("Subir nueva política", type=['pdf', 'docx', 'csv', 'json', 'md', 'html', 'xlsx'])
+    
+    if uploaded_file:
+        save_path = os.path.join("data", uploaded_file.name)
+        with open(save_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        
+        # Validar
+        is_valid, msg = validate_file(save_path)
+        if is_valid:
+            st.success(msg)
+            if st.button("Procesar archivo"):
+                with st.spinner("Ingestando..."):
+                    if perform_ingestion():
+                        st.success("Archivo procesado!")
+        else:
+            st.error(msg)
+            os.remove(save_path)
+
+# Chat
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Display chat history
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
+        if "sources" in message:
+            with st.expander("Fuentes"):
+                for src in message["sources"]:
+                    st.write(f"- {src}")
 
-# User input
 if prompt := st.chat_input("How can I help you today?"):
-    # Add user message to history
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Generate response
     with st.chat_message("assistant"):
-        with st.spinner("Searching knowledge base..."):
-            try:
-                response = query_agent(prompt)
-                st.markdown(response)
-                st.session_state.messages.append({"role": "assistant", "content": response})
-            except Exception as e:
-                error_msg = f"An error occurred: {e}"
-                st.error(error_msg)
-                st.session_state.messages.append({"role": "assistant", "content": error_msg})
+        response, docs = query_agent(prompt)
+        sources = list(set([doc.metadata.get('source', 'Desconocido') for doc in docs]))
+        
+        st.markdown(response)
+        with st.expander("Fuentes"):
+            for src in sources:
+                st.write(f"- {src}")
+        
+        st.session_state.messages.append({"role": "assistant", "content": response, "sources": sources})
