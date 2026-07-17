@@ -2,73 +2,71 @@
 
 An AI-powered corporate agent designed to help employees access internal knowledge across multiple document formats using RAG (Retrieval-Augmented Generation).
 
-## 🚀 Features
-- **Multi-format Support**: Processes PDF, Word, Excel, CSV, JSON, HTML, and Markdown.
-- **RAG Pipeline**: Uses Gemini 1.5 Flash and FAISS for accurate, context-aware retrieval.
-- **Interactive UI**: Streamlit-based chat interface for ease of use.
-- **Cloud Ready**: Dockerized for easy deployment on Oracle Cloud Infrastructure (OCI).
-
 ## 🛠️ Tech Stack
 - **LLM**: Google Gemini 1.5 Flash
 - **Framework**: LangChain
 - **Vector Store**: FAISS
 - **Frontend**: Streamlit
-- **Infrastructure**: OCI Compute + Docker
+- **Infrastructure**: OCI Compute (Oracle Linux) + Podman (Docker compatible)
 
-## 📦 Local Setup
+## 🚀 Deployment Guide (Oracle Cloud Infrastructure)
 
-### 1. Clone the repository
-\`\`\`bash
-git clone https://github.com/your-username/challenge-alura-agent.git
+### 1. Prerequisites
+- An OCI Compute Instance running Oracle Linux.
+- An API Key from Google AI Studio.
+
+### 2. Prepare the Instance
+Connect to your instance via SSH:
+```bash
+ssh -i /path/to/your/key opc@<YOUR_PUBLIC_IP>
+```
+
+Install necessary tools:
+```bash
+sudo dnf install -y git podman
+# Optional: create docker alias if not exists
+alias docker=podman
+```
+
+### 3. Setup the Project
+```bash
+git clone https://github.com/jairvides/challenge-alura-agent.git
 cd challenge-alura-agent
-\`\`\`
+```
 
-### 2. Install dependencies
-\`\`\`bash
-pip install -r requirements.txt
-\`\`\`
+### 4. Environment Configuration
+Create a `.env` file and add your Google API key:
+```bash
+nano .env
+# Paste: GOOGLE_API_KEY=your_key_here
+# Save: Ctrl+O, Enter, Ctrl+X
+```
 
-### 3. Configure Environment
-Create a \`.env\` file based on \`.env.example\`:
-\`\`\`bash
-cp .env.example .env
-# Edit .env and add your GOOGLE_API_KEY
-\`\`\`
+### 5. Build and Run
+Open the required firewall port:
+```bash
+sudo firewall-cmd --permanent --add-port=8501/tcp
+sudo firewall-cmd --reload
+```
 
-### 4. Ingest Documents
-Place your corporate documents in the \`data/\` folder and run:
-\`\`\`bash
-python ingest.py
-\`\`\`
+Build the container image:
+```bash
+docker build -t corporate-ai-agent .
+```
 
-### 5. Run the App
-\`\`\`bash
-streamlit run src/app.py
-\`\`\`
+Run the container:
+```bash
+docker run -d -p 8501:8501 --env-file .env corporate-ai-agent
+```
 
-## ☁️ OCI Deployment
+### 6. Verify
+Access your agent via your browser at `http://<YOUR_PUBLIC_IP>:8501`.
 
-### Deployment Steps:
-1. **Create OCI Compute Instance**: Launch a VM instance (e.g., Ampere A1 or AMD).
-2. **Install Docker**:
-   \`\`\`bash
-   sudo yum install -y docker
-   sudo systemctl start docker
-   sudo systemctl enable docker
-   sudo usermod -aG docker $USER
-   \`\`\`
-3. **Configure Security List**: Open ingress port `8501` in the OCI VCN Security List.
-4. **Deploy**:
-   \`\`\`bash
-   docker build -t corporate-ai-agent .
-   docker run -d -p 8501:8501 --env-file .env corporate-ai-agent
-   \`\`\`
+---
 
-## 📺 Demo
-![Agent Demo](https://via.placeholder.com/800x400?text=Agent+Running+on+OCI+Cloud)
-*(Replace this with your actual image/video link)*
-
-## 🧪 Testing
-\`\`\`bash
-pytest tests/
-\`\`\`
+## 🧪 Troubleshooting
+If you encounter `ModuleNotFoundError` during ingestion, ensure all dependencies are installed:
+```bash
+python -m pip install -r requirements.txt
+```
+If you get `docker: command not found`, use `podman` instead or ensure `podman-docker` is installed.
