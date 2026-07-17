@@ -43,5 +43,7 @@ def query_agent(query: str) -> str:
     formatted_prompt = prompt.format(context=context, question=query)
     response = llm.invoke(formatted_prompt)
     
-    # Retornar el contenido de la respuesta
+    # Retornar el contenido de la respuesta de forma limpia
+    if isinstance(response.content, list):
+        return "".join([part.get("text", "") for part in response.content if isinstance(part, dict) and part.get("type") == "text"])
     return response.content
