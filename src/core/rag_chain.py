@@ -4,11 +4,12 @@ from src.core.llm_config import get_llm, get_embeddings
 
 VECTORSTORE_DIR = "vectorstore"
 
-# Prompt
-template = """You are a helpful corporate AI assistant. 
-Use the following pieces of retrieved context to answer the user's question. 
+# Prompt dinámico
+template = """You are a helpful corporate AI assistant for an E-commerce company. 
+Use the following pieces of retrieved context to answer the user's question.
 If you don't know the answer based on the context, just say that you don't know.
 Keep the answer concise and professional.
+Respond in the following language: {language}.
 
 Context:
 {context}
@@ -17,9 +18,9 @@ Question: {question}
 
 Helpful Answer:"""
 
-def query_agent(query: str):
+def query_agent(query: str, language: str = "Spanish"):
     """
-    Queries the RAG agent manually and extracts clean text.
+    Queries the RAG agent manually and extracts clean text, respecting language.
     """
     embeddings = get_embeddings()
     
@@ -40,13 +41,12 @@ def query_agent(query: str):
     prompt = ChatPromptTemplate.from_template(template)
     
     # Definir formatted_prompt correctamente
-    formatted_prompt = prompt.format(context=context, question=query)
+    formatted_prompt = prompt.format(context=context, question=query, language=language)
     
     # Invocar LLM
     response = llm.invoke(formatted_prompt)
     
-    # Retornar texto limpio usando el atributo .text o .content
-    # .text es el método directo recomendado para modelos de Google en LangChain
+    # Retornar texto limpio
     text_response = response.text if hasattr(response, 'text') else response.content
     
     return text_response, docs

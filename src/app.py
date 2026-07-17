@@ -8,8 +8,12 @@ st.set_page_config(page_title="Corporate AI Agent", page_icon="🤖")
 
 st.title("🤖 E-CommCorp Knowledge Agent")
 
-# Sidebar para carga de archivos
+# Sidebar
 with st.sidebar:
+    st.header("Configuración")
+    # Selector de idioma
+    language = st.radio("Idioma de respuesta", ["Spanish", "English"], index=0)
+    
     st.header("Gestionar Documentos")
     uploaded_file = st.file_uploader("Subir nueva política", type=['pdf', 'docx', 'csv', 'json', 'md', 'html', 'xlsx'])
     
@@ -48,7 +52,8 @@ if prompt := st.chat_input("How can I help you today?"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        response, docs = query_agent(prompt)
+        # Pasamos el idioma seleccionado
+        response, docs = query_agent(prompt, language=language)
         sources = list(set([doc.metadata.get('source', 'Desconocido') for doc in docs]))
         
         st.markdown(response)
