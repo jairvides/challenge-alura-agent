@@ -38,8 +38,7 @@ cd challenge-alura-agent
 Create a `.env` file and add your Google API key:
 ```bash
 nano .env
-# Paste: GOOGLE_API_KEY=your_key_here OR
-# Paste: OCI_COMPARTMENT_ID=ocid1.compartment.oc1..your_compartment_ocid_here
+# Paste: GOOGLE_API_KEY=your_key_here
 # Save: Ctrl+O, Enter, Ctrl+X
 ```
 
