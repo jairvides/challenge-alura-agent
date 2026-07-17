@@ -60,6 +60,7 @@ Access your agent via your browser at `http://<YOUR_PUBLIC_IP>:8501`.
 
 ### 7. Deploy
 Clic Here for display deploy => http://157.137.221.201:8501/
+
 ![image alt](https://github.com/jairvides/challenge-alura-agent/blob/cd3bc7e1dea0b710dcd7abd164e8d591bf6c62ae/img/deploy1.png)
 ![image alt](https://github.com/jairvides/challenge-alura-agent/blob/5cd0aba0aba0acbae0cda9e911e443c5a7452c0c/img/deploy2.png)
 ![image alt](https://github.com/jairvides/challenge-alura-agent/blob/5cd0aba0aba0acbae0cda9e911e443c5a7452c0c/img/deploy3.png)
