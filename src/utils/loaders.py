@@ -32,14 +32,12 @@ def load_document(file_path: str) -> List[Document]:
             return loader.load()
         
         elif ext == '.json':
-            # Assuming JSON is a list of objects or a simple structure
-            # For a generic corporate agent, we'll use a simple JSON loader
-            loader = JSONLoader(
-                file_path=file_path,
-                jq_schema='.[]', 
-                text_content=False
-            )
-            return loader.load()
+            # Cargador simple sin depender de jq
+            import json
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                content = json.dumps(data)
+                return [Document(page_content=content, metadata={"source": file_path})]
         
         elif ext == '.html':
             loader = BSHTMLLoader(file_path)

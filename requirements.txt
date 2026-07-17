@@ -12,3 +12,6 @@ beautifulsoup4
 streamlit
 python-dotenv
 pytest
+unstructured
+markdown
+jq
