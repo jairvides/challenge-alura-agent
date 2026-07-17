@@ -19,7 +19,7 @@ Helpful Answer:"""
 
 def query_agent(query: str) -> str:
     """
-    Queries the RAG agent manually without relying on langchain.chains.
+    Queries the RAG agent manually.
     """
     embeddings = get_embeddings()
     
@@ -39,10 +39,9 @@ def query_agent(query: str) -> str:
     llm = get_llm()
     prompt = ChatPromptTemplate.from_template(template)
     
-    # Invocar LLM manualmente
+    # Definir formatted_prompt correctamente
+    formatted_prompt = prompt.format(context=context, question=query)
     response = llm.invoke(formatted_prompt)
     
-    # Extraer el texto de la respuesta (manejar tanto str como list de bloques)
-    if isinstance(response.content, list):
-        return response.content[0]['text']
+    # Retornar el contenido de la respuesta
     return response.content
