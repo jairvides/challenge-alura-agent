@@ -6,12 +6,13 @@ from ingest import perform_ingestion
 
 st.set_page_config(page_title="Corporate AI Agent", page_icon="🤖", layout="wide")
 
-# Cabecera con título y selector de idioma
+# Cabecera con título y selector de idioma persistente
 col1, col2 = st.columns([0.8, 0.2])
 with col1:
     st.title("🤖 E-CommCorp Knowledge Agent")
 with col2:
-    language = st.radio("Idioma", ["Spanish", "English"], horizontal=True)
+    # key="lang_selector" permite que Streamlit persista el valor automáticamente
+    language = st.radio("Idioma", ["Spanish", "English"], horizontal=True, key="lang_selector")
 
 st.markdown("Welcome! Ask me anything about our company policies, shipping, or FAQs.")
 
