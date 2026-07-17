@@ -1,8 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.vectorstores import FAISS
 from src.core.llm_config import get_llm, get_embeddings
-from langchain_google_genai import ChatGoogleGenerativeAI
-import time
 
 VECTORSTORE_DIR = "vectorstore"
 
@@ -30,7 +28,9 @@ def query_agent(query: str, language: str = "Spanish"):
         formatted_prompt = prompt.format(context=context, question=query, language=language)
         
         response = llm.invoke(formatted_prompt)
-        text_response = response.text if hasattr(response, 'text') else response.content
+        
+        # OCI returns a plain string, Gemini returns an object
+        text_response = response if isinstance(response, str) else (response.text if hasattr(response, 'text') else response.content)
         
         return text_response, docs
     except Exception as e:

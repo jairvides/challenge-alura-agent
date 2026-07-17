@@ -17,9 +17,6 @@ __pycache__/
 # Vector database/index (generated files)
 vectorstore/
 
-# Data directory (often contains sensitive or large files)
-data/
-
 # IDE configurations
 .vscode/
 .idea/
