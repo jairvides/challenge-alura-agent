@@ -1,0 +1,11 @@
+langchain
+langchain-google-genai
+faiss-cpu
+pypdf
+python-docx
+pandas
+openpyxl
+beautifulsoup4
+streamlit
+python-dotenv
+pytest

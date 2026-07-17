@@ -1,0 +1,32 @@
+# Environment variables
+.env
+
+# Python virtual environments
+venv/
+.venv/
+env/
+env.bak/
+venv.bak/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Vector database/index (generated files)
+vectorstore/
+
+# Data directory (often contains sensitive or large files)
+data/
+
+# IDE configurations
+.vscode/
+.idea/
+
+# MacOS files
+.DS_Store
+
+# Deployment logs or temporary files
+logs/
+*.log
