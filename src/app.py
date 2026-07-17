@@ -6,30 +6,15 @@ from ingest import perform_ingestion
 
 st.set_page_config(page_title="Corporate AI Agent", page_icon="🤖", layout="wide")
 
-# CSS para fijar el selector de idioma en la parte superior derecha
-st.markdown("""
-<style>
-div[data-testid="stAppViewContainer"] > section > div {
-    padding-top: 0rem;
-}
-div[data-testid="stVerticalBlock"]:has(div[data-testid="stRadio"]) {
-    position: fixed;
-    top: 0.5rem;
-    right: 1rem;
-    z-index: 1000;
-    background: transparent;
-}
-</style>
-""", unsafe_allow_html=True)
-
+# Cabecera con título y selector de idioma persistente
 col1, col2 = st.columns([0.8, 0.2])
 with col1:
     st.title("🤖 E-CommCorp Knowledge Agent")
 with col2:
-    st.markdown("")  # Columna vacía, el selector se renderiza fijo por CSS
+    # key="lang_selector" permite que Streamlit persista el valor automáticamente
+    language = st.radio("Idioma", ["Spanish", "English"], horizontal=True, key="lang_selector")
 
-# Selector fijo (se renderiza aquí pero flota gracias al CSS)
-language = st.radio("Idioma", ["Spanish", "English"], horizontal=True, key="lang_selector")
+st.markdown("Welcome! Ask me anything about our company policies, shipping, or FAQs.")
 
 # Sidebar para gestión de documentos
 with st.sidebar:
