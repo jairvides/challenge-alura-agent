@@ -24,7 +24,7 @@ ssh -i /path/to/your/key opc@<YOUR_PUBLIC_IP>
 Install necessary tools:
 ```bash
 sudo dnf install -y git podman
-# Optional: create docker alias if not exists
+# Alias docker to podman
 alias docker=podman
 ```
 
@@ -43,11 +43,7 @@ nano .env
 ```
 
 ### 5. Build and Run
-Open the required firewall port:
-```bash
-sudo firewall-cmd --permanent --add-port=8501/tcp
-sudo firewall-cmd --reload
-```
+**Importante**: Asegúrate de tener la carpeta `vectorstore/` generada (corriendo `python ingest.py` localmente) antes de construir la imagen.
 
 Build the container image:
 ```bash
