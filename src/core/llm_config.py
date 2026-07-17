@@ -1,26 +1,33 @@
 import os
-from langchain_community.llms import OCIGenAI
-from langchain_community.embeddings import OCIGenAIEmbeddings
+from dotenv import load_dotenv
+from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
+
+load_dotenv()
 
 def get_llm():
     """
-    Returns OCI Generative AI model using Instance Principal auth.
+    Returns the Gemini 1.5 Flash model.
     """
-    return OCIGenAI(
-        model_id="cohere.command-r-plus",
-        service_endpoint="https://inference.generativeai.us-chicago-1.oci.oraclecloud.com",
-        compartment_id=os.getenv("OCI_COMPARTMENT_ID"),
-        auth_type="INSTANCE_PRINCIPAL",
-        model_kwargs={"temperature": 0},
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        raise ValueError("GOOGLE_API_KEY not found in environment variables")
+    
+    return ChatGoogleGenerativeAI(
+        model="gemini-2.0-flash",
+        google_api_key=api_key,
+        temperature=0,
+        convert_system_message_to_human=True
     )
 
 def get_embeddings():
     """
-    Returns OCI Generative AI embeddings model.
+    Returns the Google Generative AI Embeddings model.
     """
-    return OCIGenAIEmbeddings(
-        model_id="cohere.embed-english-v3.0",
-        service_endpoint="https://inference.generativeai.us-chicago-1.oci.oraclecloud.com",
-        compartment_id=os.getenv("OCI_COMPARTMENT_ID"),
-        auth_type="INSTANCE_PRINCIPAL",
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        raise ValueError("GOOGLE_API_KEY not found in environment variables")
+    
+    return GoogleGenerativeAIEmbeddings(
+        model="gemini-embedding-001",
+        google_api_key=api_key
     )

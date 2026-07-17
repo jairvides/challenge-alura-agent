@@ -2,8 +2,7 @@ langchain
 langchain-core
 langchain-community
 langchain-text-splitters
-langchain-oci
-oci
+langchain-google-genai
 faiss-cpu
 pypdf
 python-docx
@@ -15,4 +14,4 @@ python-dotenv
 pytest
 unstructured
 markdown
-oci
+jq
