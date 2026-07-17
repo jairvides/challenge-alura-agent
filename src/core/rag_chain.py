@@ -40,7 +40,9 @@ def query_agent(query: str) -> str:
     prompt = ChatPromptTemplate.from_template(template)
     
     # Invocar LLM manualmente
-    formatted_prompt = prompt.format(context=context, question=query)
     response = llm.invoke(formatted_prompt)
     
+    # Extraer el texto de la respuesta (manejar tanto str como list de bloques)
+    if isinstance(response.content, list):
+        return response.content[0]['text']
     return response.content
