@@ -1,7 +1,7 @@
 import os
 from src.utils.loaders import load_all_documents
 from src.core.llm_config import get_embeddings
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 
 DATA_DIR = "data"
