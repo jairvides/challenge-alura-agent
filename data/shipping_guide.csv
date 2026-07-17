@@ -1,0 +1,5 @@
+region,delivery_time,cost,carrier
+North America,3-5 days,$5.00,FedEx
+Europe,5-10 days,$15.00,DHL
+Asia,7-15 days,$20.00,UPS
+South America,7-12 days,$18.00,LocalPost
