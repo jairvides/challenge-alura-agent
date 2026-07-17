@@ -4,16 +4,19 @@ from src.core.rag_chain import query_agent
 from src.utils.validator import validate_file
 from ingest import perform_ingestion
 
-st.set_page_config(page_title="Corporate AI Agent", page_icon="🤖")
+st.set_page_config(page_title="Corporate AI Agent", page_icon="🤖", layout="wide")
 
-st.title("🤖 E-CommCorp Knowledge Agent")
+# Cabecera con título y selector de idioma
+col1, col2 = st.columns([0.8, 0.2])
+with col1:
+    st.title("🤖 E-CommCorp Knowledge Agent")
+with col2:
+    language = st.radio("Idioma", ["Spanish", "English"], horizontal=True)
 
-# Sidebar
+st.markdown("Welcome! Ask me anything about our company policies, shipping, or FAQs.")
+
+# Sidebar para gestión de documentos
 with st.sidebar:
-    st.header("Configuración")
-    # Selector de idioma
-    language = st.radio("Idioma de respuesta", ["Spanish", "English"], index=0)
-    
     st.header("Gestionar Documentos")
     uploaded_file = st.file_uploader("Subir nueva política", type=['pdf', 'docx', 'csv', 'json', 'md', 'html', 'xlsx'])
     
@@ -22,7 +25,6 @@ with st.sidebar:
         with open(save_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
         
-        # Validar
         is_valid, msg = validate_file(save_path)
         if is_valid:
             st.success(msg)
@@ -52,7 +54,6 @@ if prompt := st.chat_input("How can I help you today?"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        # Pasamos el idioma seleccionado
         response, docs = query_agent(prompt, language=language)
         sources = list(set([doc.metadata.get('source', 'Desconocido') for doc in docs]))
         
