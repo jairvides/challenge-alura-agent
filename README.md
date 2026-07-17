@@ -38,8 +38,7 @@ cd challenge-alura-agent
 Create a `.env` file and add your Google API key:
 ```bash
 nano .env
-# Paste: GOOGLE_API_KEY=your_key_here OR
-# Paste: OCI_COMPARTMENT_ID=ocid1.compartment.oc1..your_compartment_ocid_here
+# Paste: GOOGLE_API_KEY=your_key_here
 # Save: Ctrl+O, Enter, Ctrl+X
 ```
 
@@ -60,10 +59,6 @@ docker run -d -p 8501:8501 --env-file .env corporate-ai-agent
 Access your agent via your browser at `http://<YOUR_PUBLIC_IP>:8501`.
 
 ### 7. Deploy
-Clic here for see deploy:
-
-http://157.137.221.201:8501/
-
 ![image alt](https://github.com/jairvides/challenge-alura-agent/blob/cd3bc7e1dea0b710dcd7abd164e8d591bf6c62ae/img/deploy1.png)
 ![image alt](https://github.com/jairvides/challenge-alura-agent/blob/5cd0aba0aba0acbae0cda9e911e443c5a7452c0c/img/deploy2.png)
 ![image alt](https://github.com/jairvides/challenge-alura-agent/blob/5cd0aba0aba0acbae0cda9e911e443c5a7452c0c/img/deploy3.png)
