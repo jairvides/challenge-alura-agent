@@ -58,6 +58,9 @@ docker run -d -p 8501:8501 --env-file .env corporate-ai-agent
 ### 6. Verify
 Access your agent via your browser at `http://<YOUR_PUBLIC_IP>:8501`.
 
+### 7. Deploy
+![image alt](https://github.com/jairvides/challenge-alura-agent/blob/cd3bc7e1dea0b710dcd7abd164e8d591bf6c62ae/img/deploy1.png)
+
 ---
 
 ## 🧪 Troubleshooting
